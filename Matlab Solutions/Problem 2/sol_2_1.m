@@ -10,7 +10,7 @@ boundary_for_first_parameter.end = max(boundary_for_first_parameter.start, 5);
 boundary_for_second_parameter.start = -5;
 boundary_for_second_parameter.end = max(boundary_for_second_parameter.start, 5);
 
-density_for_parameter = 2000;
+density_for_parameter = 1000;
 
 step_for_first_parameter = (boundary_for_first_parameter.end - boundary_for_first_parameter.start) / density_for_parameter;
 step_for_second_parameter = (boundary_for_second_parameter.end - boundary_for_second_parameter.start) / density_for_parameter;
@@ -29,6 +29,9 @@ for i = 1 : density_for_parameter
     end
 end
 
+% Uncomment this part if You would like to see the figure with the function
+
+%{
 figure(1)
 v = [0:2:10 10:10:100 100:20:200];
 [c,h] = contour(X,Y,Composition_matrix_for_z_axis,v,'linewidth',2);
@@ -36,3 +39,18 @@ colorbar;
 axis image;
 xlabel('x_1','Fontsize',14);
 ylabel('x_2','Fontsize',14);
+
+% Findong all local minimizers, maximizers and saddle points:
+%}
+
+% Minimizers:
+sol_1 = fsolve( df, [10 10], options);
+sol_2 = fsolve( df, [-10 10], options);
+sol_3 = fsolve( df, [-10 -10], options);
+sol_4 = fsolve( df, [10 -10], options);
+% Maximizers:
+sol_5 = fsolve( df, [0 0], options);
+% Saddle points:
+sol_6 = fsolve( df, [-3 0], options);
+sol_7 = fsolve( df, [3 0], options);
+sol_8 = fsolve( df, [0 3], options);
