@@ -1,49 +1,94 @@
-function [x_out, converged, solution_info] = own_newton(x_in, fun, varargin)
-addpath('immoptibox\');
 
-% Initialize f, df, d2f, tolerance
+% Newton algorithm with Newton direction
+%   f = @(x1,x2) (x1^2 + x2 - 11)^2 + (x1 + x2^2 - 7)^2
+%   df = {@(x1,x2) 2*x1 + 4*x1*(x1^2 + x2 - 11) + 2*x2^2 - 14}
+%        {@(x1,x2) [2*x2 + 4*x2*(x2^2 + x1 - 7) + 2*x1^2 - 22}
+%   They are defined in solution 2_0
+
+
+%This initiates f, df, d2f
 sol_2_0;
 
-%local parameters
-converged = false;
-operations_counter = 0;
-operations_max_amount = 1500;
-solution_vector_with_steps_values = [];
-solution_vector_with_function_values = [];
-%=================
+% Starting points
+x_0 = [10 , 3 ;...
+       -3 , 3 ;...
+       0 , 0];
+dimension = size(x_0);
+amount_of_starting_points = dimension(1);
 
-x_old = x_in;
-x_new = x_old;
+for i = 1 : 1 : amount_of_starting_points
+    X_k                 = x_0(i, :); % Starting point
+    max_iterations      = 100*length(X_k);
+    converged           = false;
+    stat.converged      = false; % converged
+    stat.nfun           = 0; % number of function calls
+    stat.iter           = 0; % number of iterations
 
-if (norm(df,'inf') < tol)
-    converged = true;
-end
+    % Initial iteration
+    f_val = f(X_k);
+    df_val = df(X_k);
+    converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
+    stat.nfun = 1;
+    iterations = 1;
 
-while(~converged && operations_counter < operations_max_amount)
-    %newton_direction = -(d2f\df); 
-    newton_direction = -df; 
-    
-    %[x_new, f_new, df_new, info] = linesearch(fun, x_old, f, df, newton_direction);%, 0, varargin{:});
-    [x_new, info] = ucminf(fun, x_old);%, varargin{:});
-    %options = optimoptions('fminunc','GradObj','on');
-    %[x_new, f_new] = fminunc(fun, x_old, options);%, varargin{:});
+    % Store data for plotting
+    stat.X = X_k;
+    stat.F = f_val;
+    stat.dF = df_val;
 
-    [f, df, d2f] = feval(fun, x_new);%, 0,0, varargin{:});
-    solution_vector_with_steps_values = [solution_vector_with_steps_values x_new];
-    solution_vector_with_function_values = [solution_vector_with_function_values f];
-    if( (x_new - x_old)^2 < tol)
-        disp('ERROR!!!!!!!!!!!!!!!!!');
-        converged = false;
-        break;
+    % Main loop of steepest descent
+    while ~converged && (iterations < max_iterations)
+    % Steepest descent step
+    % ================================================
+    step_direction = (-(d2f)^-1)*df_val;
+    step_length = 1;
+    X_k_1 = X_k + step_length * step_direction';
+
+
+    % The strong Wolfe Conditions
+    c1 = 0.25;
+    c2 = 1 - c1;
+    rho = 0.9;
+    while ( ...
+        f(X_k_1) > f(X_k) + c1 * step_length * (df_val') * step_direction ...
+        || ...
+        abs((df(X_k_1)') * step_direction) < c2 * abs((df_val') * step_direction) ...
+        )
+        step_length = step_length * rho;
+        X_k_1 = X_k + step_length * step_direction';
     end
-    x_old = x_new;
-    
-    operations_counter = operations_counter + 1;
-    converged = (norm(df,'inf') < tol);
+
+
+    % ================================================
+    f_val = f(X_k_1);
+    df_val = df(X_k_1);
+    converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
+
+    iterations = iterations+1;
+    stat.nfun = stat.nfun+1;
+
+    % Store data for plotting
+    stat.X = [stat.X X_k_1];
+    stat.F = [stat.F f_val];
+    stat.dF = [stat.dF df_val];
+
+    X_k = X_k_1;
+    end
+
+    % Prepare return data
+    if ~converged
+    X_k = [];
+    end
+
+    % If it converged
+    stat.converged = converged;
+    stat.iter = iterations;
+    stat.ek = [];
+    stat.gradient_norm = [];
+    for i = 1:1:length(stat.X)
+        stat.ek = [stat.ek norm(stat.X(i) - stat.X(length(stat.X)),2)];
+        stat.gradient_norm = [stat.gradient_norm norm(stat.dF(i),'inf')];
+    end
 end
 
-x_out = x_new;
-
-
-solution_info = table( transpose(solution_vector_with_steps_values), transpose(solution_vector_with_function_values));
-end
+%plot(stat.X, stat.F);

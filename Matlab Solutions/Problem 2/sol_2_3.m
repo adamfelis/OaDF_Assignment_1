@@ -9,10 +9,6 @@
 %This initiates f, df, d2f
 sol_2_0;
 
-% Local variables:
-%f = @(x) x^2 + x + 10;
-%df = @(x) 2*x + 1;
-
 % Starting points
 x_0 = [10 , 3 ;...
        -3 , 3 ;...
