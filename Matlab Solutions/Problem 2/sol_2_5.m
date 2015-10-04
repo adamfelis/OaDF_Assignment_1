@@ -20,7 +20,7 @@ amount_of_starting_points = dimension(1);
 final_results_of_2_5 = struct([]);
 %-------------------
 
-for i = 1 : 1 : amount_of_starting_points;
+for i = 1 : 1 : amount_of_starting_points
     [x_n, information] = BFGS(f, df, x_0(i, :)', tolerance_for_BFGS_algorithm, max_amount_of_iterations, true);
     final_results_of_2_5(i).information = information;
     final_results_of_2_5(i).solution = x_n;
