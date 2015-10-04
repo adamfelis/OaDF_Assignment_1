@@ -6,7 +6,7 @@ function [x_n, information] = Levenberg_Marquardt( f, df, d2f, x_0, r, tolerance
 %       d2f - second derivative of function
 %       x_0 - starting point
 %       r - value used to set up mi_0 parameter, when >=1 then the initial
-%           matrix is guaranteed to be positive defined
+%           matrix is guaranteed to be positive defined; default: 10e-6
 %       tolerance - if new solution is in the 'tolerance' neighbourhood of
 %           previous solution algorithm will stop main loop execution (the best
 %           solution is found)
@@ -28,39 +28,47 @@ iteration_counter               =   0;
 x                               =   x_0;
 mi_0                            =   r * norm(d2f(x), 'inf');
 mi                              =   mi_0;
+ni                              =   2;
 size_of_hessian                 =   length(d2f(x));
 A                               =   d2f(x) + mi * eye(size_of_hessian);
-is_matrix_A_positive_defined    =   is_matrix_positive_defined(A); 
 found                           =   false;
-m_k = @(x_k, h, B) f(x_k) + (df(x_k)') * (h) + 0.5 * h' * B * h;
+m_k                             =   @(x_k, h, B) f(x_k) + (df(x_k)') * (h) + 0.5 * h' * B * h;
 delta                           =   0;
+approximations                  =   x_0;
 %----------------------
 
 while ( ~found && iteration_counter <=  max_amount_of_iterations )
+    
+    A = d2f(x) + mi * eye(size_of_hessian);
+    is_matrix_A_positive_defined = is_matrix_positive_defined(A); 
     while( ~is_matrix_A_positive_defined )
         mi = 2 * mi;
         A = d2f(x) + mi * eye(size_of_hessian);
         is_matrix_A_positive_defined = is_matrix_positive_defined(A); 
     end
     
-    % Solving equation A * h_dn = - df - it should be cholesky algorithm
-    h_dn = A \ (-df(x));
+    % Solving equation A * h_dn = - df ; A = R'*R - cholesky factorization
+    R = chol(A);
+    h_dn = R\(R'\(-df(x)));
     ro = (f(x) - f(x + h_dn)) / (m_k(x, [0;0], d2f(x)) - m_k(x, h_dn, d2f(x)));
     if ( ro > delta )
         x = x + h_dn;
+        approximations = [ approximations x ];
+        ni = 2;
         mi = mi * max(1/3, 1 - (2*ro - 1)^3);
     else
-        mi = 2 * mi;
+        mi = mi * ni;
+        ni = 2 * ni;
     end
     iteration_counter = iteration_counter + 1;
     
-    norm_value = norm(df(x), 'inf');
-    found = (norm_value <= tolerance);
+    inf_norm_value = norm(df(x), 'inf');
+    found = (inf_norm_value <= tolerance);
 end
 
 information.converged = found;
 information.amount_of_iterations = iteration_counter;
-%information.approximations = approximations;
+information.approximations = approximations;
 
 x_n = x;
 
