@@ -27,6 +27,7 @@ for i = 1 : 1 : amount_of_starting_points
     % Initial iteration
     f_val = f(X_k);
     df_val = df(X_k);
+    d2f_val = d2f(X_k);
     converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
     stat.nfun = 1;
     iterations = 1;
@@ -35,44 +36,47 @@ for i = 1 : 1 : amount_of_starting_points
     stat.X = X_k;
     stat.F = f_val;
     stat.dF = df_val;
+    stat.d2F = d2f_val;
 
     % Main loop of steepest descent
     while ~converged && (iterations < max_iterations)
-    % Steepest descent step
-    % ================================================
-    step_direction = (-(d2f)^-1)*df_val;
-    step_length = 1;
-    X_k_1 = X_k + step_length * step_direction';
-
-
-    % The strong Wolfe Conditions
-    c1 = 0.25;
-    c2 = 1 - c1;
-    rho = 0.9;
-    while ( ...
-        f(X_k_1) > f(X_k) + c1 * step_length * (df_val') * step_direction ...
-        || ...
-        abs((df(X_k_1)') * step_direction) < c2 * abs((df_val') * step_direction) ...
-        )
-        step_length = step_length * rho;
+        % Steepest descent step
+        % ================================================
+        step_direction = -(inv(d2f_val))*df_val;
+        step_length = 1;
         X_k_1 = X_k + step_length * step_direction';
-    end
 
 
-    % ================================================
-    f_val = f(X_k_1);
-    df_val = df(X_k_1);
-    converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
+        % The strong Wolfe Conditions
+        c1 = 0.25;
+        c2 = 1 - c1;
+        rho = 0.9;
+        while ( ...
+            f(X_k_1) > f(X_k) + c1 * step_length * (df_val') * step_direction ...
+            || ...
+            abs((df(X_k_1)') * step_direction) < c2 * abs((df_val') * step_direction) ...
+            )
+            step_length = step_length * rho;
+            X_k_1 = X_k + step_length * step_direction';
+        end
 
-    iterations = iterations+1;
-    stat.nfun = stat.nfun+1;
 
-    % Store data for plotting
-    stat.X = [stat.X X_k_1];
-    stat.F = [stat.F f_val];
-    stat.dF = [stat.dF df_val];
+        % ================================================
+        f_val = f(X_k_1);
+        df_val = df(X_k_1);
+        d2f_val = d2f(X_k_1);
+        converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
 
-    X_k = X_k_1;
+        iterations = iterations+1;
+        stat.nfun = stat.nfun+1;
+
+        % Store data for plotting
+        stat.X = [stat.X X_k_1];
+        stat.F = [stat.F f_val];
+        stat.dF = [stat.dF df_val];
+        stat.d2F = d2f_val;
+
+        X_k = X_k_1;
     end
 
     % Prepare return data

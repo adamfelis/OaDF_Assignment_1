@@ -1,5 +1,5 @@
 
-% Steepest descent algorithm with steepest descent direction Bk-df with Bk = I
+% Newton algorithm with Newton direction
 %   f = @(x1,x2) (x1^2 + x2 - 11)^2 + (x1 + x2^2 - 7)^2
 %   df = {@(x1,x2) 2*x1 + 4*x1*(x1^2 + x2 - 11) + 2*x2^2 - 14}
 %        {@(x1,x2) [2*x2 + 4*x2*(x2^2 + x1 - 7) + 2*x1^2 - 22}
@@ -8,10 +8,6 @@
 
 %This initiates f, df, d2f
 sol_2_0;
-
-% Local variables:
-%f = @(x) x^2 + x + 10;
-%df = @(x) 2*x + 1;
 
 % Starting points
 x_0 = [10 , 3 ;...
@@ -31,7 +27,7 @@ for i = 1 : 1 : amount_of_starting_points
     % Initial iteration
     f_val = f(X_k);
     df_val = df(X_k);
-    converged = (norm(df_val,'inf') <= tolerance_for_SDD_algorithm);
+    converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
     stat.nfun = 1;
     iterations = 1;
 
@@ -44,7 +40,7 @@ for i = 1 : 1 : amount_of_starting_points
     while ~converged && (iterations < max_iterations)
     % Steepest descent step
     % ================================================
-    step_direction = -df_val;
+    step_direction = -(inv(d2f))*df_val;
     step_length = 1;
     X_k_1 = X_k + step_length * step_direction';
 
@@ -66,7 +62,7 @@ for i = 1 : 1 : amount_of_starting_points
     % ================================================
     f_val = f(X_k_1);
     df_val = df(X_k_1);
-    converged = (norm(df_val,'inf') <= tolerance_for_SDD_algorithm);
+    converged = (norm(df_val,'inf') <= tolerance_for_Newton_algorithm);
 
     iterations = iterations+1;
     stat.nfun = stat.nfun+1;
