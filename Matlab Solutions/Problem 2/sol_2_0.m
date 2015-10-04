@@ -1,9 +1,6 @@
 % Default starting script for Problem 2
 
-%clear all;
-
-%clear all;
-%close all;
+close all;
 
 f   = @(X)  ( (X(1).^2 + X(2) - 11).^2 + (X(1) + X(2).^2 - 7).^2 ); 
 df  = @(X)  [ (4.*X(1).^3 + 4.*X(1).*X(2) - 42.*X(1) + 2.*X(2).^2 - 14); ...
