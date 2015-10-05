@@ -48,16 +48,16 @@ ylabel('x_2','Fontsize',14);
 
 
 % Minimizers:
-sol_1 = fsolve( df, [10 10], options);
-sol_2 = fsolve( df, [-10 10], options);
-sol_3 = fsolve( df, [-10 -10], options);
-sol_4 = fsolve( df, [10 -10], options);
+[sol_1.x, sol_1.f] = fsolve( df, [10 10], options);
+[sol_2.x, sol_2.f] = fsolve( df, [-10 10], options);
+[sol_3.x, sol_3.f] = fsolve( df, [-10 -10], options);
+[sol_4.x, sol_4.f] = fsolve( df, [10 -10], options);
 % Maximizers:
-sol_5 = fsolve( df, [0 0], options);
+[sol_5.x, sol_5.f] = fsolve( df, [0 0], options);
 % Saddle points:
-sol_6 = fsolve( df, [-3 0], options);
-sol_7 = fsolve( df, [3 0], options);
-sol_8 = fsolve( df, [0 3], options);
+[sol_6.x, sol_6.f] = fsolve( df, [-3 0], options);
+[sol_7.x, sol_7.f] = fsolve( df, [3 0], options);
+[sol_8.x, sol_8.f] = fsolve( df, [0 3], options);
 
 final_results_of_2_1.minimizers = [sol_1 ; sol_2; sol_3; sol_4];
 final_results_of_2_1.maximizers = sol_5;
