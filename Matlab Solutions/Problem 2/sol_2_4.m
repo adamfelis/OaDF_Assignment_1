@@ -44,10 +44,11 @@ for i = 1 : 1 : amount_of_starting_points
         % ================================================
         step_direction = -(inv(d2f_val))*df_val;
         step_length = 1;
-        X_k_1 = X_k + step_length * step_direction';
+        %X_k_1 = X_k + step_length * step_direction';
 
 
         % The strong Wolfe Conditions
+        %{
         c1 = 0.25;
         c2 = 1 - c1;
         rho = 0.9;
@@ -59,6 +60,10 @@ for i = 1 : 1 : amount_of_starting_points
             step_length = step_length * rho;
             X_k_1 = X_k + step_length * step_direction';
         end
+        %}
+        
+        step_length = BacktrackingLineSearch(X_k, step_direction, step_length);
+        X_k_1 = X_k + step_length * step_direction;
 
 
         % ================================================
