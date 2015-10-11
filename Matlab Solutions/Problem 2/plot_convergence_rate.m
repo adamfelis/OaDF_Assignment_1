@@ -11,8 +11,10 @@ log_e = log(e);
 %-----------------
 X = log_e(:,1:length(log_e)-1);
 Y = log_e(:,2:length(log_e));
-
-plot(X, Y, 'x'); 
+axis image;
+plot(X(1,:), Y(2,:)); 
+hold on;
+plot(X(1,:), Y(2,:), 'xr'); 
 
 end
 

@@ -7,7 +7,7 @@
 
 sol_2_1;
 
-% Script parameters:
+%% Script parameters:
 % Rows of x_0 are starting points
 x_0 = [10 , 3 ;...
        -3 , 3 ;...
@@ -16,12 +16,13 @@ dimension = size(x_0);
 amount_of_starting_points = dimension(1);
 %--------------------
 
-% Global variables:
+%% Global variables:
 final_results_of_2_5 = struct([]);
 %-------------------
 
+%% Main Loop
 for i = 1 : 1 : amount_of_starting_points
-    [x_n, information] = BFGS(f, df, x_0(i, :)', tolerance_for_BFGS_algorithm, max_amount_of_iterations, true);
+    [x_n, information] = BFGS(f, df, x_0(i, :)', tolerance_for_BFGS_algorithm, max_amount_of_iterations, false);
     final_results_of_2_5(i).information = information;
     final_results_of_2_5(i).solution = x_n;
     if( ~information.converged)
@@ -43,6 +44,7 @@ for i = 1 : 1 : amount_of_starting_points
     final_results_of_2_5(i).convergence_rates = (plot_convergence(information.approximations, x_n))';
     subplot(2,2,4);
     plot_convergence_rate(information.approximations, x_n);
+    
 end
 
 clearvars -except final_results_of_2_5;

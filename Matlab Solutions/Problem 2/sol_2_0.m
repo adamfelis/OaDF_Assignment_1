@@ -14,8 +14,9 @@ options = optimset('Display','off');
 
 tolerance_for_SDD_algorithm = 1.0e-10;
 tolerance_for_Newton_algorithm = 1.0e-10;
-tolerance_for_BFGS_algorithm = 1e-05;
-tolerance_for_Levenberg_Marquardt_algorithm = 1e-05;
+tolerance_for_BFGS_algorithm = 1e-10;
+tolerance_for_Levenberg_Marquardt_algorithm = 1e-10;
+tolerance_for_Gauss_Newton_algorithm = 1e-10;
 
 % Modify this variable to modify maximum amount 
-max_amount_of_iterations = 5000;
+max_amount_of_iterations = 1000;
