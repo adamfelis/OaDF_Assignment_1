@@ -1,2 +1,0 @@
-- gauss-newton ok?
-- convergence rate ok?

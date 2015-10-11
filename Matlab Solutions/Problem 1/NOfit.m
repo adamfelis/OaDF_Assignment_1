@@ -39,7 +39,7 @@ function [ x_star, r_star ] = NOfit( t,y,n )
 %               A = |1       .             .            .      ...  |
 %                   |1       .             .            .      ...  |
 %                   |1  sin(w*t(m))  cos(w*t(m))  sin(2w*t(m)) ...  |
-% and minimizes function f(x) = 0.5 * norm(r(x),2)^2 = 0.5 * norm(Ax - y,2)^2.
+% and minimizes function f(x) = 0.5 * norm(r(x),2)^2 = 0.5*norm(Ax - y,2)^2.
 % As a result of minimization vector x_star is obtained.
 % 
 % Output parameters:
@@ -111,7 +111,7 @@ r = @(x) (A * x - y);
 %               df/dx = 0.
 % Also: 
 %           A'Ax -A'y = 0 -> A'Ax = A'y -> x = ((A'A)^(-1))A'y
-% (because d2f/dx2 = A'A is positive definite due to the assumption mod(n,2) = 1)
+% (if d2f/dx2 = A'A is positive definite)
 x_star = ((A'*A)^(-1))*(A')*y;
 
 % r_star is a residual vector for a minimum of the objective function.
