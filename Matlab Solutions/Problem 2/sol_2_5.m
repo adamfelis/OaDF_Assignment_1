@@ -29,7 +29,7 @@ for i = 1 : 1 : amount_of_starting_points
     end
     
     figure(i+1)
-    subplot(1,2,1);
+    subplot(2,2,[1 3]);
     [c,h] = contour(X,Y,Composition_matrix_for_z_axis,v,'linewidth',2);
     colorbar;
     axis image;
@@ -37,10 +37,12 @@ for i = 1 : 1 : amount_of_starting_points
     ylabel('x_2','Fontsize',14);
     hold on;
     plot(information.approximations(1,:), information.approximations(2,:));
+    plot(information.approximations(1,:), information.approximations(2,:), 'xr');
     
-    subplot(1,2,2);
+    subplot(2,2,2);
     final_results_of_2_5(i).convergence_rates = (plot_convergence(information.approximations, x_n))';
-    
+    subplot(2,2,4);
+    plot_convergence_rate(information.approximations, x_n);
 end
 
 clearvars -except final_results_of_2_5;
