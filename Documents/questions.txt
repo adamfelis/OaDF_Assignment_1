@@ -1,0 +1,3 @@
+- gauss-newton ok?
+- convergence rate ok?
+- how to prove that A'A is positive definite

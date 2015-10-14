@@ -16,7 +16,7 @@ convergence_rates   =   zeros(1, iterations_amount);
 %-----------------
 
 for i = 1 : 1 : iterations_amount
-    convergence_rates(i) = norm(approximations(:,i) - result, 'inf');
+    convergence_rates(i) = norm(approximations(:,i) - result, 2);
 end
 
 plot(iterations, convergence_rates);
