@@ -6,10 +6,7 @@
 %   They are defined in solution 2_0
 
 
-% NOTES: Currently Newton doesnt converge with starting point 0,0 with
-% Wolfe linesearch
-% When using Backtracking linesearch, one of the graphs are are wierd,
-% check it.
+% NOTES: Currently doesnt converge with starting point 0,0
 
 
 %This initiates f, df, d2f
@@ -33,14 +30,12 @@ for i = 1 : 1 : amount_of_starting_points
     end
 
     % If it converged
-    %{
     stat.ek = [];
     stat.gradient_norm = [];
     for ii = 1:1:length(information.X)
         stat.ek = [stat.ek norm(information.X(ii) - information.X(length(information.X)),2)];
         stat.gradient_norm = [stat.gradient_norm norm(information.dF(ii),'inf')];
     end
-    %}
 
 
     % PLOT
@@ -58,7 +53,7 @@ for i = 1 : 1 : amount_of_starting_points
 
     subplot(1,2,2);
     convergence_rates = (plot_convergence(information.X, solution))';
-    % ===============================================================
+    % ====================================================
 end
 
 clearvars

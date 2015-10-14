@@ -36,8 +36,10 @@ end
 % Uncomment this part if You would like to see the figure with the function
 
 
-figure(1)
+%figure(1)
+
 v = [0:2:10 10:10:100 100:20:200];
+%{
 [c,h] = contour(X,Y,Composition_matrix_for_z_axis,v,'linewidth',2);
 colorbar;
 axis image;
@@ -62,5 +64,6 @@ ylabel('x_2','Fontsize',14);
 final_results_of_2_1.minimizers = [sol_1 ; sol_2; sol_3; sol_4];
 final_results_of_2_1.maximizers = sol_5;
 final_results_of_2_1.saddle_points = [sol_6 ; sol_7; sol_8];
+%}
 
-clearvars -except final_results_of_2_1 f df d2f options tolerance_for_BFGS_algorithm tolerance_for_Levenberg_Marquardt_algorithm max_amount_of_iterations X Y v Composition_matrix_for_z_axis;
+clearvars -except final_results_of_2_1 f df d2f options tolerance_for_BFGS_algorithm tolerance_for_Levenberg_Marquardt_algorithm max_amount_of_iterations X Y v Composition_matrix_for_z_axis tolerance_for_Newton_algorithm tolerance_for_SDD_algorithm;
