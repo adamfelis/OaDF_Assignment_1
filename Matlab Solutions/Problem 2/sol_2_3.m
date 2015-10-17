@@ -19,7 +19,7 @@ amount_of_starting_points = dimension(1);
 
 
 for i = 1 : 1 : amount_of_starting_points
-    [solution, information] = SteepestDescent(f, df, d2f, x_0(i,:)', tolerance_for_SDD_algorithm);
+    [solution, information] = SteepestDescent(f, df, x_0(i,:)', tolerance_for_SDD_algorithm);
 
     % It didnt converge
     if ~information.converged

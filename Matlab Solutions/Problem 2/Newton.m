@@ -25,9 +25,8 @@ function [solution, information] = Newton(f, df, d2f, x_0, tolerance_for_Newton_
         step_length = 1;
         X_k_1 = X_k + step_length * step_direction;
 
-
-        % The strong Wolfe Conditions line search
         
+        % The strong Wolfe Conditions line search
         c1 = 0.25;
         c2 = 1 - c1;
         rho = 0.9;
