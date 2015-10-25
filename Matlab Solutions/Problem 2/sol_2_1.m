@@ -4,7 +4,7 @@
 
 sol_2_0;
 
-% Script parameters:
+%% Script parameters:
 boundary_for_first_parameter.start      =    -5;
 boundary_for_first_parameter.end        =    max(boundary_for_first_parameter.start, 5);
 boundary_for_second_parameter.start     =    -5;
@@ -16,11 +16,11 @@ step_for_first_parameter                =    (boundary_for_first_parameter.end -
 step_for_second_parameter               =    (boundary_for_second_parameter.end - boundary_for_second_parameter.start) / density_for_parameter;
 % ------------------
 
-% Global variables:
+%% Global variables:
 final_results_of_2_1 = struct();
 %-------------------
 
-% Solution:
+%% Function plot:
 x1 = boundary_for_first_parameter.start + step_for_first_parameter : step_for_first_parameter : boundary_for_first_parameter.end;
 x2 = boundary_for_second_parameter.start + step_for_second_parameter : step_for_second_parameter : boundary_for_second_parameter.end;
 
@@ -33,37 +33,27 @@ for i = 1 : density_for_parameter
     end
 end
 
-% Uncomment this part if You would like to see the figure with the function
 
-
-%figure(1)
-
+figure(1)
 v = [0:2:10 10:10:100 100:20:200];
-%{
 [c,h] = contour(X,Y,Composition_matrix_for_z_axis,v,'linewidth',2);
 colorbar;
 axis image;
 xlabel('x_1','Fontsize',14);
 ylabel('x_2','Fontsize',14);
 
-% Findong all local minimizers, maximizers and saddle points:
+%% Finding all local minimizers, maximizers and saddle points:
 
+syms a b;
+f_ab = (a^2 + b - 11)^2 + (a + b^2 - 7)^2;
+df_da = diff(f_ab, a);
+df_db = diff(f_ab, b);
+[y1, y2] = solve(df_da == 0, df_db == 0, a, b);
+minimizers = real([double(y1) double(y2)]);
+hold on;
+plot(minimizers(:,1), minimizers(:,2), '.r', 'MarkerSize', 25);
 
-% Minimizers:
-[sol_1.x, sol_1.f] = fsolve( df, [10 10], options);
-[sol_2.x, sol_2.f] = fsolve( df, [-10 10], options);
-[sol_3.x, sol_3.f] = fsolve( df, [-10 -10], options);
-[sol_4.x, sol_4.f] = fsolve( df, [10 -10], options);
-% Maximizers:
-[sol_5.x, sol_5.f] = fsolve( df, [0 0], options);
-% Saddle points:
-[sol_6.x, sol_6.f] = fsolve( df, [-3 0], options);
-[sol_7.x, sol_7.f] = fsolve( df, [3 0], options);
-[sol_8.x, sol_8.f] = fsolve( df, [0 3], options);
-
-final_results_of_2_1.minimizers = [sol_1 ; sol_2; sol_3; sol_4];
-final_results_of_2_1.maximizers = sol_5;
-final_results_of_2_1.saddle_points = [sol_6 ; sol_7; sol_8];
-%}
+%% Result
+final_results_of_2_1.minimizers = minimizers;
 
 clearvars -except final_results_of_2_1 f df d2f options tolerance_for_BFGS_algorithm tolerance_for_Levenberg_Marquardt_algorithm max_amount_of_iterations X Y v Composition_matrix_for_z_axis tolerance_for_Newton_algorithm tolerance_for_SDD_algorithm tolerance_for_Gauss_Newton_algorithm;

@@ -5,26 +5,24 @@
 
 sol_2_1;
 
-df_1 = df(final_results_of_2_1.minimizers(1).x);
-df_2 = df(final_results_of_2_1.minimizers(2).x);
-df_3 = df(final_results_of_2_1.minimizers(3).x);
-df_4 = df(final_results_of_2_1.minimizers(4).x);
+%% Script parameters:
+dfs = zeros(length(final_results_of_2_1.minimizers),2);
+eigenvalues = zeros(length(final_results_of_2_1.minimizers),2);
 
-df_5 = df(final_results_of_2_1.maximizers(1).x);
+%% Main loop:
 
-df_6 = df(final_results_of_2_1.saddle_points(1).x);
-df_7 = df(final_results_of_2_1.saddle_points(2).x);
-df_8 = df(final_results_of_2_1.saddle_points(3).x);
+for i = 1 : 1 : length(final_results_of_2_1.minimizers)
+    sol = df(final_results_of_2_1.minimizers(i,:));
+    dfs(i,1) = sol(1);
+    dfs(i,2) = sol(2);
+    
+    values = eig(d2f(final_results_of_2_1.minimizers(i,:)));
+    eigenvalues(i,1) = values(1);
+    eigenvalues(i,2) = values(2);
+end
 
-Eigenvalues_Of_The_Hessian_For_The_First_Minimizer = eig(d2f(final_results_of_2_1.minimizers(1).x));
-Eigenvalues_Of_The_Hessian_For_The_Second_Minimizer = eig(d2f(final_results_of_2_1.minimizers(2).x));
-Eigenvalues_Of_The_Hessian_For_The_Third_Minimizer = eig(d2f(final_results_of_2_1.minimizers(3).x));
-Eigenvalues_Of_The_Hessian_For_The_Fourth_Minimizer = eig(d2f(final_results_of_2_1.minimizers(4).x));
+%% Result
+final_results_of_2_2.dfs = dfs;
+final_results_of_2_2.eigenvalues = eigenvalues;
 
-
-Eigenvalues_Of_The_Hessian_For_The_Maximizer = eig(d2f(final_results_of_2_1.maximizers(1).x));
-
-
-Eigenvalues_Of_The_Hessian_For_The_First_Saddle_Point = eig(d2f(final_results_of_2_1.saddle_points(1).x));
-Eigenvalues_Of_The_Hessian_For_The_Second_Saddle_Point = eig(d2f(final_results_of_2_1.saddle_points(2).x));
-Eigenvalues_Of_The_Hessian_For_The_Third_Saddle_Point = eig(d2f(final_results_of_2_1.saddle_points(3).x));
+clearvars -except final_results_of_2_2

@@ -110,9 +110,9 @@ r = @(x) (A * x - y);
 % To obtain a minimizer we have to calulate solution of the equation:
 %               df/dx = 0.
 % Also: 
-%           A'Ax -A'y = 0 -> A'Ax = A'y -> x = ((A'A)^(-1))A'y
-% (if d2f/dx2 = A'A is positive definite)
-x_star = ((A'*A)^(-1))*(A')*y;
+%           A'Ax -A'y = 0 -> A'Ax = A'y -> x = (A'A) \ (A')y
+
+x_star = (A'*A) \ (A')*y;
 
 % r_star is a residual vector for a minimum of the objective function.
 r_star = r(x_star);

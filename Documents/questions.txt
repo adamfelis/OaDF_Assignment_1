@@ -1,3 +1,2 @@
-- gauss-newton ok?
-- convergence rate ok?
-- how to prove that A'A is positive definite
+- BFGS should be almost quadratic !!!!!!!!!!!!!!!!! 
+- table with convergence rate : last few values of e_k, |f(x*) - f(x_k)|, ||df(x_k)||

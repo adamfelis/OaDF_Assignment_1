@@ -1,4 +1,4 @@
-function plot_convergence_rate(approximations, result)
+function e = plot_convergence_rate(approximations, result)
 
 % Local variables:
 approximations_size =   size(approximations);
@@ -14,7 +14,9 @@ Y = log_e(:,2:length(log_e));
 axis image;
 plot(X(1,:), Y(2,:)); 
 hold on;
-plot(X(1,:), Y(2,:), 'xr'); 
+plot(X(1,:), Y(2,:), 'xr');
+plot(X(1,:), X(1,:),'--k');
+plot(X(1,:), 2*X(1,:),'--k');
 
 end
 

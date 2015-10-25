@@ -41,7 +41,7 @@ while ~converged && (iteration_counter < max_amount_of_iterations)
     
     % It works like: step = - (B)^(-1) * df_value
     if(with_inversing_of_B)
-        step_direction = - B \ df_value;
+        step_direction = - (B \ df_value);
     else
         step_direction = - H * df_value;
     end
@@ -49,18 +49,21 @@ while ~converged && (iteration_counter < max_amount_of_iterations)
     x_new = x_previous + step_length * step_direction;
     
     % The strong Wolfe Conditions
-    
-    c1 = 0.25;
-    c2 = 1 - c1;
+    eig(H)
+    c1 = 10e-4;
+    c2 = 0.9;%1 - c1;
     rho = 0.9;
+    k = 0;
     while ( ...
         f(x_new) > f(x_previous) + c1 * step_length * (df_value') * step_direction ...
         || ...
-        abs((df(x_new)') * step_direction) < c2 * abs((df_value') * step_direction) ...
+        abs(step_direction' * df(x_new)) < c2 * abs(step_direction' * df_value) ...
         )
         step_length = step_length * rho;
         x_new = x_previous + step_length * step_direction;
+        k = k+1;
     end
+        disp(k);
     
     df_new_value = df(x_new);
     norm_value = norm(df_new_value, 'inf');
@@ -74,10 +77,12 @@ while ~converged && (iteration_counter < max_amount_of_iterations)
         B = B - (B_times_distance / dot(distance_in_arguments, B_times_distance)) * B_times_distance' + ...
             (distance_in_derivative_values / dot(distance_in_derivative_values, distance_in_arguments)) * distance_in_derivative_values';
     else
+        
         if iteration_counter == 1
             beta = (distance_in_derivative_values' * distance_in_arguments) / (distance_in_derivative_values' * distance_in_derivative_values);
             H = beta * H;
         end
+        
         ro = 1 / dot(distance_in_derivative_values, distance_in_arguments);
         E = ( eye(length(x_0)) - ro * distance_in_arguments * distance_in_derivative_values');
         H = E * H * E' + ro * (distance_in_arguments * distance_in_arguments');
