@@ -41,7 +41,7 @@ for i = 1 : 1 : amount_of_starting_points
     
     % PLOT
     figure(i+1)
-    subplot(1,2,1);
+    subplot(2,2,[1 3]);
     [c,h] = contour(X,Y,Composition_matrix_for_z_axis,v,'linewidth',2);
     colorbar;
     axis image;
@@ -50,10 +50,13 @@ for i = 1 : 1 : amount_of_starting_points
     ylabel('x_2','Fontsize',14);
     hold on;
     test = information.X;
-    plot(information.X(1,:), information.X(2,:));
+    plot(information.X(1,:), information.X(2,:));   
+    plot(information.X(1,:), information.X(2,:), 'xr');
 
-    subplot(1,2,2);
-    %convergence_rates = (plot_convergence(information.X, solution))';
+
+  	subplot(2,2,2);
+    convergence_rates = (plot_convergence(information.X, solution))';
+    subplot(2,2,4);
     e = plot_convergence_rate(information.X, solution);
     solution_table = prepare_table(e, information.X, f, df, solution);
     % ===============================================================
