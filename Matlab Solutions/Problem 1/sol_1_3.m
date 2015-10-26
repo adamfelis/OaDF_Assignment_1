@@ -144,7 +144,7 @@ figure(3);
 hold on;
 [ax,b,p] = plotyy(all_possible_n,autocorrelations,all_possible_n,trends_threshholds,'bar','plot');
 p.LineWidth = 1;
-p.Color = [0,0.7,0.7];
+p.Color = 'r';
 title('Trends as a function of n');
 xlabel('n');
 ylabel(ax(1),'Absolute autocorrelation value');

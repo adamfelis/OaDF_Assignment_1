@@ -58,7 +58,8 @@ for i = 1 : 1 : amount_of_starting_points
 
     subplot(1,2,2);
     %convergence_rates = (plot_convergence(information.X, solution))';
-    plot_convergence_rate(information.X, solution);
+    e = plot_convergence_rate(information.X, solution);
+    solution_table = prepare_table(e, information.X, f, df, solution);
     % ===============================================================
 end
 
