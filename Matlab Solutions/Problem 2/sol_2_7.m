@@ -10,7 +10,8 @@ sol_2_1;
 % Rows of x_0 are starting points
 x_0 = [10 , 3 ;...
        -3 , 3 ;...
-        0 , 0];
+        0 , 0 ;...
+        -2 -5];
 dimension = size(x_0);
 amount_of_starting_points = dimension(1);
 %--------------------
@@ -42,7 +43,8 @@ for i = 1 : 1 : amount_of_starting_points
     subplot(2,2,2);
     final_results_of_2_7(i).convergence_rates = (plot_convergence(information.approximations, x_n))';
     subplot(2,2,4);
-    plot_convergence_rate(information.approximations, x_n);
+    e = plot_convergence_rate(information.approximations, x_n);
+    final_results_of_2_7(i).table = prepare_table(e, information.approximations, f,df,x_n);
 end
 
 clearvars -except final_results_of_2_7;

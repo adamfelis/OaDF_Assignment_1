@@ -47,9 +47,7 @@ while ~converged && (iteration_counter < max_amount_of_iterations)
     end
     step_length = 1;
     x_new = x_previous + step_length * step_direction;
-    
     % The strong Wolfe Conditions
-    eig(H)
     c1 = 10e-4;
     c2 = 0.9;%1 - c1;
     rho = 0.9;
@@ -63,7 +61,6 @@ while ~converged && (iteration_counter < max_amount_of_iterations)
         x_new = x_previous + step_length * step_direction;
         k = k+1;
     end
-        disp(k);
     
     df_new_value = df(x_new);
     norm_value = norm(df_new_value, 'inf');

@@ -49,7 +49,8 @@ for i = 1 : 1 : amount_of_starting_points
     subplot(2,2,2);
     final_results_of_2_6(i).convergence_rates = (plot_convergence(information.approximations, x_n))';
     subplot(2,2,4);
-    plot_convergence_rate(information.approximations, x_n);
+    e = plot_convergence_rate(information.approximations, x_n);
+    final_results_of_2_6(i).table = prepare_table(e, information.approximations, f,df,x_n);
 end
 
 clearvars -except final_results_of_2_6;

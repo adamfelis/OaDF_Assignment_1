@@ -43,8 +43,8 @@ function [ x_star, r_star ] = NOfit( t,y,n )
 % As a result of minimization vector x_star is obtained.
 % 
 % Output parameters:
-%       - x_star - n-length vector with minimizes f(x) function described
-%           above,
+%       - x_star - n-length vector which minimizes f(x) function described
+%           above (this vector provides the best model fitting),
 %       - r_star - n-length vector of residuals computed for x_star
 %           minimization vector.
 

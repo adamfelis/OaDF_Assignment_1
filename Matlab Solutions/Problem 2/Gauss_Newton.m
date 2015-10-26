@@ -33,14 +33,11 @@ approximations      =        x_0;
 while ~converged && (iteration_counter < max_amount_of_iterations)
     iteration_counter = iteration_counter + 1;
     
-    
-    %step_direction = - ((J'*J)^(-1)) * J' * r(x_previous);
-    step_direction = - (d2f(x_previous)^(-1)) * df(x_previous);
+    step_direction = - d2f(x_previous) \ df(x_previous);
     step_length = 1;
     x_new = x_previous + step_length * step_direction;
-    
     % Armijo condition
-    c1 = 0.25;
+    c1 = 10e-4;%0.25;
     rho = 0.9;
     while ( ...
         f(x_new) > f(x_previous) + c1 * step_length * (df(x_previous)') * step_direction ...
