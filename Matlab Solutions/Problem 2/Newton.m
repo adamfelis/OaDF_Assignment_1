@@ -21,11 +21,6 @@ function [solution, information] = Newton(f, df, d2f, x_0, tolerance_for_Newton_
     % Main loop
     while ~converged && (iterations < max_iterations)
         % ================================================
-<<<<<<< HEAD
-=======
-        
-        %step_direction = -(inv(d2f_val))*df_val;
->>>>>>> origin/master
         step_direction = -d2f_val\df_val;
         step_length = 1;
         X_k_1 = X_k + step_length * step_direction;
